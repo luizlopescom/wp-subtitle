@@ -53,6 +53,7 @@ class WPSubtitle_Admin {
 				add_action( 'edit_form_top', array( 'WPSubtitle_Admin', '_add_subtitle_field' ) );
 			} else {
 				add_action( 'add_meta_boxes', array( 'WPSubtitle_Admin', '_add_meta_boxes' ) );
+				add_action( 'admin_head', array( 'WPSubtitle_Admin', '_add_admin_char_counter_script' ) );
 			}
 
 			add_filter( 'manage_edit-' . $post_type . '_columns', array( 'WPSubtitle_Admin', 'manage_subtitle_columns' ) );
@@ -107,7 +108,8 @@ class WPSubtitle_Admin {
 			<div class="inline-edit-col column-<?php echo $column_name; ?>">
 				<label>
 					<span class="title"><?php esc_html_e( 'Subtitle', 'wp-subtitle' ); ?></span>
-					<span class="input-text-wrap"><input type="text" name="wps_subtitle" class="wps_subtitle" value=""></span>
+					<span class="input-text-wrap"><input type="text" id="wpsubtitle" name="wps_subtitle" class="wps_subtitle" value=""></span>
+					<span class="" for="wpsubtitle"><span id="wpsubtitle_counter"></span> caracteres.</span>
 				</label>
 			</div>
 		</fieldset>
@@ -263,6 +265,20 @@ class WPSubtitle_Admin {
 		<?php
 	}
 
+
+	/**
+	 * Add Admin Char counter script
+	 *
+	 * @since  2.2
+	 * @internal
+	 */
+	public static function _add_admin_char_counter_script() {
+
+		wp_enqueue_script( 'wps_subtitle_counter', plugins_url( 'js/admin-edit-character-counter.js', __FILE__ ), false, null, true );
+
+	}
+	
+
 	/**
 	 * Get Meta Box Title
 	 *
@@ -314,7 +330,9 @@ class WPSubtitle_Admin {
 
 		// As of WordPress 4.3 no need to esc_attr() AND htmlentities().
 		// @see  https://core.trac.wordpress.org/changeset/33271
-		echo '<input type="text" id="wpsubtitle" name="wps_subtitle" value="' . esc_attr( $value ) . '" autocomplete="off" placeholder="' . esc_attr( apply_filters( 'wps_subtitle_field_placeholder', __( 'Enter subtitle here', 'wp-subtitle' ) ) ) . '" style="width:99%;" />';
+		//echo '<input type="text" id="wpsubtitle" name="wps_subtitle" value="' . esc_attr( $value ) . '" autocomplete="off" placeholder="' . esc_attr( apply_filters( 'wps_subtitle_field_placeholder', __( 'Enter subtitle here', 'wp-subtitle' ) ) ) . '" style="width:99%;" />';
+		echo '<textarea class="components-textarea-control__input" id="wpsubtitle" name="wps_subtitle" value="" autocomplete="off" placeholder="' . esc_attr( apply_filters( 'wps_subtitle_field_placeholder', __( 'Enter subtitle here', 'wp-subtitle' ) ) ) . '" rows="4" style="width:99%;">' . esc_attr( $value ) . '</textarea>';
+		echo '<label class="components-base-control__label" for="wpsubtitle"><span id="wpsubtitle_counter"></span> caracteres.</label>';
 
 		echo apply_filters( 'wps_subtitle_field_description', '', $post );
 
@@ -342,6 +360,7 @@ class WPSubtitle_Admin {
 		// As of WordPress 4.3 no need to esc_attr() AND htmlentities().
 		// @see  https://core.trac.wordpress.org/changeset/33271
 		echo '<input type="text" id="wpsubtitle" name="wps_subtitle" value="' . esc_attr( $value ) . '" autocomplete="off" placeholder="' . esc_attr( apply_filters( 'wps_subtitle_field_placeholder', __( 'Enter subtitle here', 'wp-subtitle' ) ) ) . '" />';
+		//echo '<textarea id="wpsubtitle" name="wps_subtitle" placeholder="' . esc_attr( apply_filters( 'wps_subtitle_field_placeholder', __( 'Enter subtitle here', 'wp-subtitle' ) ) ) . '">' . esc_attr( $value ) . '</textarea>';
 
 		echo '</div>';
 
