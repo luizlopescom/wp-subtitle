@@ -3,6 +3,10 @@ WP Subtitle
 
 Add subtitles (subheadings) to your pages, posts or custom post types.
 
+This is a branch of the official WP Subtitle plugin. I made some UI enhancements like:
+ - Changed input text field to textarea.
+ - Display a character count.
+
 The WP Subtitle plugin allows your pages and posts to contain a subtitle.  Also called a sub-heading, this this short line of text is meant to appear beneath a post's (or page's) title, but can be inserted in your template wherever you choose.
 
 The subtitle can be inserted into your theme template files (or plugin) using the following API:
